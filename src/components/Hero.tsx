@@ -8,6 +8,7 @@ type HeroProps = {
 const Hero: React.FC<HeroProps> = ({ setCurrentSection }) => {
   const [typedText, setTypedText] = useState('');
   const [currentRole, setCurrentRole] = useState(0);
+  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; color: string }>>([]);
   
   const roles = [
     'Healthcare System Implementor',
@@ -40,8 +41,45 @@ const Hero: React.FC<HeroProps> = ({ setCurrentSection }) => {
 
     return () => clearInterval(typeEffect);
   }, [currentRole]);
+
+  // Particle burst handler
+  const handleParticleBurst = (e: React.MouseEvent) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const colors = ['#06b6d4', '#3b82f6', '#a21caf', '#f59e42', '#f43f5e'];
+    const newParticles = Array.from({ length: 18 }).map((_, i) => ({
+      id: Date.now() + i + Math.random(),
+      x: centerX,
+      y: centerY,
+      color: colors[i % colors.length],
+    }));
+    setParticles((prev) => [...prev, ...newParticles]);
+    setTimeout(() => {
+      setParticles((prev) => prev.slice(newParticles.length));
+    }, 900);
+  };
   return (
     <section className="w-screen h-screen flex items-center justify-center relative overflow-hidden flex-shrink-0 pt-20">
+      {/* Particle Burst Effect */}
+      {particles.map((particle, idx) => (
+        <div
+          key={particle.id}
+          className="pointer-events-none fixed z-40"
+          style={{
+            left: particle.x,
+            top: particle.y,
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            background: particle.color,
+            opacity: 0.8,
+            transform: `translate(-50%, -50%) scale(1)` +
+              ` rotate(${(idx * 20)}deg) translateY(${40 + Math.random() * 30}px)`,
+            animation: 'particle-burst 0.9s cubic-bezier(.61,-0.01,.41,1.01) forwards',
+          }}
+        />
+      ))}
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-purple-500/10 dark:from-gray-800 dark:via-gray-900 dark:to-black">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23cbd5e1%22 fill-opacity=%220.1%22%3E%3Ccircle cx=%227%22 cy=%227%22 r=%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] dark:bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23374151%22 fill-opacity=%220.05%22%3E%3Ccircle cx=%227%22 cy=%227%22 r=%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
@@ -90,7 +128,7 @@ const Hero: React.FC<HeroProps> = ({ setCurrentSection }) => {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
           <button
-            onClick={() => setCurrentSection(3)}
+            onClick={(e) => { setCurrentSection(3); handleParticleBurst(e); }}
             className="group bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 flex items-center space-x-2 transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25"
           >
             <span>View My Work</span>
@@ -147,6 +185,11 @@ const Hero: React.FC<HeroProps> = ({ setCurrentSection }) => {
         }
         .animate-float {
           animation: float 6s ease-in-out infinite;
+        }
+        @keyframes particle-burst {
+          0% { opacity: 0.8; transform: scale(1) translateY(0); }
+          80% { opacity: 1; }
+          100% { opacity: 0; transform: scale(0.7) translateY(80px); }
         }
       `}</style>
     </section>

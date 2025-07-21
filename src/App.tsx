@@ -101,6 +101,40 @@ function App() {
     };
   }, [currentSection, sections.length]);
 
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      touchEndX = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+      const minSwipeDistance = 50; // px
+      if (touchStartX - touchEndX > minSwipeDistance && currentSection < sections.length - 1) {
+        setCurrentSection(prev => prev + 1);
+      } else if (touchEndX - touchStartX > minSwipeDistance && currentSection > 0) {
+        setCurrentSection(prev => prev - 1);
+      }
+      touchStartX = 0;
+      touchEndX = 0;
+    };
+
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [currentSection, sections.length]);
+
   const navigateToSection = (index: number) => {
     setCurrentSection(index);
   };

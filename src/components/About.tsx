@@ -76,16 +76,16 @@ const About: React.FC = () => {
   const [activePhoto, setActivePhoto] = useState(0);
 
   return (
-    <section className="w-screen h-screen flex items-center justify-center relative overflow-hidden flex-shrink-0 md:pt-20 overflow-y-auto  pt-60 sm:overflow-y-visible">
+    <section className="w-screen h-screen flex items-center justify-center relative overflow-hidden flex-shrink-0  overflow-y-auto  sm:overflow-y-visible">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-cyan-500/10 dark:from-gray-800 dark:via-gray-900 dark:to-black" />
 
-      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="max-w-7xl mx-auto  grid lg:grid-cols-2 gap-6 items-center relative sm:pt-20 pt-80 z-10">
         {/* Left Column - Profile & Photos */}
-        <div className="space-y-6 sm:space-y-8">
+        <div className="space-y-6 sm:space-y-8 pt-20 sm:pt-20 ">
           <div className="text-center lg:text-left">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
-              <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent  ">
                 About Me
               </span>
             </h2>
@@ -167,7 +167,7 @@ const About: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center space-x-2">
               <MapPin className="w-4 h-4 text-cyan-500" />
-              <span>San Francisco, CA</span>
+              <span>Makassar, Indonesia</span>
             </div>
             <div className="flex items-center space-x-2">
               <Zap className="w-4 h-4 text-cyan-500" />
@@ -178,7 +178,7 @@ const About: React.FC = () => {
           
         {/* Right Column - Skills & History Education */}
         <div className="space-y-6 lg:space-y-8">     
-          <section className="mt-0 md:mt-8">
+          <section className="mt-10 md:mt-8">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">
               <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
                 Professional Experience
